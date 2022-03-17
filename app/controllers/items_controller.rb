@@ -54,7 +54,6 @@ class ItemsController < ApplicationController
   end
 
   def item_post
-    @item = Item.find(params[:id])
     redirect_to root_path unless @item.user.id == current_user.id
   end
 end
