@@ -54,6 +54,10 @@ class ItemsController < ApplicationController
   end
 
   def item_post
-    redirect_to root_path if @item.user.id == current_user.id
+    if @item.user.id != current_user.id 
+      redirect_to root_path
+    elsif @item.buy.present?
+      redirect_to root_path
+    end
   end
 end

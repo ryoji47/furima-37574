@@ -1,18 +1,37 @@
 class BuysController < ApplicationController
   before_action :authenticate_user!, only: :index
+  before_action :set_item, only: [:create, :index]
   before_action :item_post, only: :index
-
+  
   def index
-    
+    @buy_order = BuyOrder.new
   end
 
   def create
-    
+    @buy_order = BuyOrder.new(buy_params)
+    if @buy_order.valid?
+      @buy_order.save
+      redirect_to root_path
+    else
+      render :index
+    end
   end
-  
+
   private
 
+  def buy_params
+    params.require(:buy_order).permit(:post_code, :prefecture_id, :city, :address, :building_name, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id])
+  end
+
   def item_post
-    redirect_to root_path if @item.user.id == current_user.id
+    if @item.user.id == current_user.id
+      redirect_to root_path 
+    elsif @item.buy.present?
+      redirect_to root_path
+    end
+  end
+
+  def set_item
+    @item = Item.find(params[:item_id])
   end
 end
