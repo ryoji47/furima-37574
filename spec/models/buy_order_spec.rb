@@ -64,8 +64,18 @@ RSpec.describe BuyOrder, type: :model do
         @buy_order.valid?
         expect(@buy_order.errors.full_messages).to include("Phone number can't be blank")
       end
-      it 'phone_numberが10桁以上11桁以内の半角数値でないと購入できない' do
-        @buy_order.phone_number = '514432'
+      it 'phone_numberが12桁以上では購入できない' do
+        @buy_order.phone_number = '090123412345'
+        @buy_order.valid?
+        expect(@buy_order.errors.full_messages).to include('Phone number is invalid')
+      end
+      it 'phone_numberが9桁以下では購入できない' do
+        @buy_order.phone_number = '519989'
+        @buy_order.valid?
+        expect(@buy_order.errors.full_messages).to include('Phone number is invalid')
+      end
+      it 'phone_numberにに半角数字以外が含まれている場合は購入できない' do
+        @buy_order.phone_number = '090-8787-9898'
         @buy_order.valid?
         expect(@buy_order.errors.full_messages).to include('Phone number is invalid')
       end
