@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe BuyOrder, type: :model do
-  before do 
+  before do
     user = FactoryBot.create(:user)
     item = FactoryBot.create(:item)
     @buy_order = FactoryBot.build(:buy_order, user_id: user.id, item_id: item.id)
@@ -42,12 +42,12 @@ RSpec.describe BuyOrder, type: :model do
       it 'postal_codeが「3桁ハイフン4桁」の半角文字列でないと購入できない' do
         @buy_order.post_code = '1234567'
         @buy_order.valid?
-        expect(@buy_order.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
+        expect(@buy_order.errors.full_messages).to include('Post code is invalid. Include hyphen(-)')
       end
       it 'prefecture_idが---では購入できない' do
         @buy_order.prefecture_id = 0
         @buy_order.valid?
-        expect(@buy_order.errors.full_messages).to include("Prefecture 選択して下さい")
+        expect(@buy_order.errors.full_messages).to include('Prefecture 選択して下さい')
       end
       it 'cityが空では購入できない' do
         @buy_order.city = nil
@@ -67,7 +67,7 @@ RSpec.describe BuyOrder, type: :model do
       it 'phone_numberが10桁以上11桁以内の半角数値でないと購入できない' do
         @buy_order.phone_number = '514432'
         @buy_order.valid?
-        expect(@buy_order.errors.full_messages).to include("Phone number is invalid")
+        expect(@buy_order.errors.full_messages).to include('Phone number is invalid')
       end
     end
   end
